@@ -6,8 +6,8 @@
   "keywords": [ "console", "color" ],
   "license": "BSD",
   "src": [
-    "src/console-colors.c",
-    "src/console-colors.h"
+    "console-colors.c",
+    "console-colors.h"
   ],
   "dependencies": { }
 }
