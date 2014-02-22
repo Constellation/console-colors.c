@@ -85,7 +85,7 @@ static WORD ExtractForeground(WORD attributes) {
         FOREGROUND_INTENSITY |
         FOREGROUND_GREEN |
         FOREGROUND_BLUE |
-        FOREGROUND_RED,
+        FOREGROUND_RED;
     return attributes & mask;
 }
 
@@ -94,7 +94,7 @@ static WORD ExtractBackground(WORD attributes) {
         BACKGROUND_INTENSITY |
         BACKGROUND_GREEN |
         BACKGROUND_BLUE |
-        BACKGROUND_RED,
+        BACKGROUND_RED;
     return attributes & mask;
 }
 
