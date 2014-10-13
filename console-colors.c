@@ -27,6 +27,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "console-colors.h"
@@ -147,7 +149,7 @@ int cc_fprintf(cc_color_t color, FILE* stream, const char* format, ...) {
     va_start(ap, format);
     int result = -EINVAL;
 
-    if (stream != stdout && stream != stderr) {
+    if (!isatty(fileno(stream)) || (stream != stdout && stream != stderr)) {
         result = Write(stream, format, ap);
         goto finish;
     }
