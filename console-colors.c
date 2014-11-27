@@ -147,19 +147,19 @@ static void UnixTerminalRestore(FILE* stream) {
 #endif  /* _WIN32 */
 
 int cc_fprintf(cc_color_t color, FILE* stream, const char* format, ...) {
-    va_list ap;
-    va_start(ap, format);
+    unsigned int fg, bg;
     int result = -EINVAL;
+    va_list ap;
+
+    va_start(ap, format);
 
     if (!isatty(fileno(stream)) || (stream != stdout && stream != stderr)) {
         result = Write(stream, format, ap);
         goto finish;
     }
 
-    const unsigned int fg =
-        color & ((1 << CC_COLOR_BITS) - 1);
-    const unsigned int bg =
-        (color >> CC_COLOR_BITS) & ((1 << CC_COLOR_BITS) - 1);
+    fg = color & ((1 << CC_COLOR_BITS) - 1);
+    bg = (color >> CC_COLOR_BITS) & ((1 << CC_COLOR_BITS) - 1);
 
 #ifdef _WIN32
     const HANDLE console = GetStdHandle(
