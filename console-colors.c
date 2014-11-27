@@ -142,7 +142,7 @@ static void UnixTerminalColorize(
 }
 
 static void UnixTerminalRestore(FILE* stream) {
-    fputs("\x1B[39;49m", stream);
+    fputs("\x1B[39;49m\x1B[K", stream);
 }
 #endif  /* _WIN32 */
 
