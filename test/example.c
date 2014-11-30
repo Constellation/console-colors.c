@@ -24,6 +24,9 @@
 #include "../console-colors.h"
 
 int main(int argc, char** argv) {
+    (void) argc;
+    (void) argv;
+
     cc_fprintf(
             CC_FG_RED |
             CC_BG_BLUE,

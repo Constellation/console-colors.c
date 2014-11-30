@@ -21,6 +21,8 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#define _POSIX_SOURCE
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <errno.h>
@@ -140,24 +142,24 @@ static void UnixTerminalColorize(
 }
 
 static void UnixTerminalRestore(FILE* stream) {
-    fputs("\x1B[39;49m", stream);
+    fputs("\x1B[39;49m\x1B[K", stream);
 }
 #endif  /* _WIN32 */
 
 int cc_fprintf(cc_color_t color, FILE* stream, const char* format, ...) {
-    va_list ap;
-    va_start(ap, format);
+    unsigned int fg, bg;
     int result = -EINVAL;
+    va_list ap;
+
+    va_start(ap, format);
 
     if (!isatty(fileno(stream)) || (stream != stdout && stream != stderr)) {
         result = Write(stream, format, ap);
         goto finish;
     }
 
-    const unsigned int fg =
-        color & ((1 << CC_COLOR_BITS) - 1);
-    const unsigned int bg =
-        (color >> CC_COLOR_BITS) & ((1 << CC_COLOR_BITS) - 1);
+    fg = color & ((1 << CC_COLOR_BITS) - 1);
+    bg = (color >> CC_COLOR_BITS) & ((1 << CC_COLOR_BITS) - 1);
 
 #ifdef _WIN32
     const HANDLE console = GetStdHandle(
