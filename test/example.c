@@ -23,9 +23,11 @@
 */
 #include "../console-colors.h"
 
+#define UNUSED(param) ((void)param)
+
 int main(int argc, char** argv) {
-    (void) argc;
-    (void) argv;
+    UNUSED(argc);
+    UNUSED(argv);
 
     cc_fprintf(
             CC_FG_RED |
