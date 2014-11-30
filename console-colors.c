@@ -147,9 +147,13 @@ static void UnixTerminalRestore(FILE* stream) {
 #endif  /* _WIN32 */
 
 int cc_fprintf(cc_color_t color, FILE* stream, const char* format, ...) {
-    unsigned int fg, bg;
+    unsigned int fg;
+    unsigned int bg;
     int result = -EINVAL;
     va_list ap;
+#ifdef _WIN32
+    HANDLE console;
+#endif  /* _WIN32 */
 
     va_start(ap, format);
 
@@ -162,7 +166,7 @@ int cc_fprintf(cc_color_t color, FILE* stream, const char* format, ...) {
     bg = (color >> CC_COLOR_BITS) & ((1 << CC_COLOR_BITS) - 1);
 
 #ifdef _WIN32
-    const HANDLE console = GetStdHandle(
+    console = GetStdHandle(
             stream == stdout ? STD_OUTPUT_HANDLE : STD_ERROR_HANDLE);
     if (console == INVALID_HANDLE_VALUE) {
         result = Write(stream, format, ap);
